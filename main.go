@@ -19,21 +19,24 @@ func page404(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "<h1>Page Not Found</h1>")
 }
 
-func pathHandler(w http.ResponseWriter, r *http.Request) {
+type router struct {
+}
+
+func (router router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, r.URL.Path)
 	fmt.Fprintln(w, r.URL.RawPath)
-	// switch r.URL.Path {
-	// case "/":
-	// 	homeHandler(w, r)
-	// case "/contact":
-	// 	contactHandler(w, r)
-	// default:
-	// 	page404(w, r)
-	// }
+	switch r.URL.Path {
+	case "/":
+		homeHandler(w, r)
+	case "/contact":
+		contactHandler(w, r)
+	default:
+		page404(w, r)
+	}
 }
 
 func main() {
-	http.HandleFunc("/", pathHandler)
+	var router router
 	fmt.Println("Server is running ")
-	http.ListenAndServe("localhost:3000", nil)
+	http.ListenAndServe("localhost:3000", router)
 }
