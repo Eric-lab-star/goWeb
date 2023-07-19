@@ -31,6 +31,6 @@ func main() {
 	r.Get("/contact", contactHandler)
 	r.Get("/faq", faqPage)
 	r.NotFound(page404)
-	fmt.Println("Server is running ")
+	fmt.Println("Server is running on http://localhost:3000 ")
 	http.ListenAndServe("localhost:3000", r)
 }
