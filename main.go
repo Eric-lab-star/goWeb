@@ -39,7 +39,7 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func faqPage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "<h1>FAQ</h1>\n<ul><li>hey!</li></ul>")
+	executeTempl(w, filepath.Join("templates", "faq.gohtml"))
 }
 
 func page404(w http.ResponseWriter, r *http.Request) {
