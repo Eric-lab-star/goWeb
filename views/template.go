@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"text/template"
+
+	"github.com/Eric-lab-star/webDev/templates"
 )
 
 type Template struct {
@@ -17,6 +19,16 @@ func Must(t Template, err error) Template {
 	}
 	return t
 }
+
+func ParseFS(filePath string) (Template, error) {
+	tmpl, err := template.ParseFS(templates.FS, filePath)
+	if err != nil {
+		err = fmt.Errorf("parsing template error %w", err)
+		return Template{}, err
+	}
+	return Template{tmpl}, nil
+}
+
 func Parse(path string) (Template, error) {
 	tmpl, err := template.ParseFiles(path)
 	if err != nil {
