@@ -1,5 +1,9 @@
-<h1> FAQ </h1>
-<ol>
-	<li> I am not student </li>
-</ol>
-
+{{define "page"}}
+	<h1> FAQ </h1>
+	<ol>
+	{{range . }}
+		<li><strong>{{.Question}}</strong></li>
+		<span>{{.Answer}}<span>
+	{{end}}
+	</ol>
+{{end}}
