@@ -24,7 +24,6 @@ func main() {
 	r.Get("/faq", controller.FAQ(tmpl))
 	tmpl = views.Must(views.ParseFS("404.gohtml"))
 	r.NotFound(controller.StaticHandler(tmpl))
-
 	wd, err := os.Getwd()
 	if err != nil {
 		panic(err)
@@ -35,12 +34,13 @@ func main() {
 	http.ListenAndServe("localhost:3000", r)
 }
 
+
 func FileServer(r chi.Router, path string, root http.FileSystem) {
 	if strings.ContainsAny(path, "{}*") {
 		panic("FileServer does not permit any URL parameters.")
 	}
 	if path != "/" && path[len(path)-1] != '/' {
-		r.Get(path, http.RedirectHandler(path+"/", 301).ServeHTTP)
+		r.Get(path, http.RedirectHandler(path+"/", http.StatusPermanentRedirect).ServeHTTP)
 		path += "/"
 	}
 	path += "*"
