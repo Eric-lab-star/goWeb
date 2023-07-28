@@ -1,26 +1,79 @@
+:root {
+  ---img-high: url("/static/background.jpg");
+  ---w-900: 900px;
+  --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='700' height='823' viewBox='0 0 700 823'%3E%3Cfilter id='blur' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'%3E%3CfeGaussianBlur stdDeviation='20 20' edgeMode='duplicate' /%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1 1' /%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Cimage filter='url(%23blur)' xlink:href='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD/7QA4UGhvdG9zaG9wIDMuMAA4QklNBAQAAAAAAAA4QklNBCUAAAAAABDUHYzZjwCyBOmACZjs+EJ+/+EAWEV4aWYAAE1NACoAAAAIAAIBEgADAAAAAQABAACHaQAEAAAAAQAAACYAAAAAAAOgAQADAAAAAQABAACgAgAEAAAAAQAAB4CgAwAEAAAAAQAACWAAAAAA/9sAQwADAgICAgIDAgICAwMDAwQGBAQEBAQIBgYFBgkICgoJCAkJCgwPDAoLDgsJCQ0RDQ4PEBAREAoMEhMSEBMPEBAQ/9sAQwEDAwMEAwQIBAQIEAsJCxAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQ/8AAEQgAHgAYAwEiAAIRAQMRAf/EABgAAAMBAQAAAAAAAAAAAAAAAAAGBwUI/8QAKhAAAgIBAgYBAwUBAAAAAAAAAQIDBBEFIQAGBxITMSJBUYEIIzJhcfD/xAAYAQADAQEAAAAAAAAAAAAAAAAFBgcDCP/EACgRAAIBAwMEAQQDAAAAAAAAAAECEQMEIQAFBjFBUWEHEhMicYGRof/aAAwDAQACEQMRAD8Au3TjnG08hvUZ6zTqf3IktrIs4+J2fb5YOQSACMbn2b7y31Aq3ohFahnrSqMvHLGVKj777Y/vjg6pzlrGkavKY9TkeNJgWD2Wkx3BtmMYSEnJ9xSHuO5jzuHLU+qd63oYjoahLWtOpRnAb4g/YHdTn/vrxou5VfsCjWUPHQkwR6PkeO/vQNeN0Kd+15Y1TRDGXQKChPcqMfST3iQTmJJ1Y/1C9eY69KXk3lbUliM4MV6xHOEcg+40YHuAxksQN1zuBnJxyvavGxJVgmllmEtjvLJacNI69v1cPF3bn+cgwfUed+Dgc5Zmlj/saZqRphYRZHsSdJNvWLEWqWUhYBlk8aI0TROSAR2eJGMabsPhGuPYLMQyjUSh1CGnedtEtLVKBewKvlGCdzH77fx+ONzppydV0ejX1+4kMt+7CssZQfCtG4yFTO+SCMn8DA9vquRup4qWy/HqXNqK9/UIZhICxieknM/x/eufeVfNFaw3A2uzUVZEMMzz+RByABED2cnrGo9T1NJrFaOz3CZJmiePxNIwzjYoz9hGVx2umM7BkJA4OHHqDyZX16nPq1PxQ6jDEXYsD451UZw+N8gA4Yf4QRtwcJ+98YvNqujQEMvUHGR+pwdUfivPto5HYC6qA03GGWCYPogZHjv5Gv/Z' x='0' y='0' height='100%25' width='100%25'/%3E%3C/svg%3E%0A");
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
 body {
-  background-color: white;
   margin: 0px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.low {
+  background-image: linear-gradient(
+      rgba(240, 226, 226, 0.8),
+      rgba(192, 188, 188, 0.8)
+    ),
+    var(--svg);
+}
+
+.high {
+  background-image: linear-gradient(
+      rgba(240, 226, 226, 0.8),
+      rgba(192, 188, 188, 0.8)
+    ),
+    var(---img-high);
+  animation: sharpen 1s both;
+}
+
+topImage {
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  position: absolute;
+}
+
+@keyframes sharpen {
+  0% {
+    filter: blur(40px);
+  }
+
+  100% {
+    filter: blur(0px);
+  }
 }
 
 top {
+  padding-top: 10px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  width: var(---w-900);
   height: 300px;
-  background-color: green;
 }
+
+top h1 {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 100px;
+  font-family: "Borel", cursive;
+}
+
 navBar {
-  width: 900px;
   box-sizing: border-box;
-  display: flex;
   justify-content: space-between;
   padding: 0px;
   display: flex;
   font-size: 20px;
-  margin-top: 20px;
 }
 
 .right {
@@ -34,12 +87,9 @@ navBar a {
   justify-content: center;
   height: 100%;
   text-decoration: none;
-  color: white;
+  width: max-content;
+  color: rgba(31, 25, 25, 0.8);
   padding: 6px 10px;
-}
-
-navBar a:hover {
-  background-color: red;
 }
 
 navBar svg {
@@ -51,5 +101,13 @@ navBar svg {
 
 page {
   display: flex;
-  background-color: gray;
+  background-color: white;
+  height: 100vh;
+  width: 900px;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.faq ol {
+  margin-left: 20px;
 }
