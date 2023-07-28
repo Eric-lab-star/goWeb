@@ -37,7 +37,7 @@ func Parse(path string) (Template, error) {
 	return Template{tmpl}, nil
 }
 
-func (t *Template) ExecuteTempl(w http.ResponseWriter, data interface{}) {
+func (t Template) ExecuteTempl(w http.ResponseWriter, data interface{}) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	err := t.htmlTmpl.Execute(w, data)
 	if err != nil { // makes error when passed in data field doesn't exist

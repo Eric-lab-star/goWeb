@@ -18,7 +18,7 @@ func main() {
 	r.Use(middleware.Logger)
 
 	tmpl := views.Must(views.ParseFS("layout.html", "home.gohtml"))
-	r.Get("/", controller.StaticHandler(tmpl.ExecuteTempl))
+	r.Get("/", controller.StaticHandler(tmpl))
 
 	tmpl = views.Must(views.ParseFS("layout.html", "contact.gohtml"))
 	r.Get("/contact", controller.StaticHandler(tmpl))
@@ -30,7 +30,8 @@ func main() {
 	r.NotFound(controller.StaticHandler(tmpl))
 
 	user := controller.User{}
-	user.Template = views.Must(views.ParseFS("layout.html", "signUp.html"))
+	tmpl = views.Must(views.ParseFS("layout.html", "signUp.html"))
+	user.Template = tmpl
 	r.Get("/signup", user.Render)
 
 	wd, err := os.Getwd()
