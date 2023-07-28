@@ -16,24 +16,33 @@ import (
 func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
+
 	tmpl := views.Must(views.ParseFS("layout.html", "home.gohtml"))
 	r.Get("/", controller.StaticHandler(tmpl))
+
 	tmpl = views.Must(views.ParseFS("layout.html", "contact.gohtml"))
 	r.Get("/contact", controller.StaticHandler(tmpl))
+
 	tmpl = views.Must(views.ParseFS("layout.html", "faq.gohtml"))
 	r.Get("/faq", controller.FAQ(tmpl))
+
 	tmpl = views.Must(views.ParseFS("404.gohtml"))
 	r.NotFound(controller.StaticHandler(tmpl))
+
+	tmpl = views.Must(views.ParseFS("layout.html", "signUp.html"))
+	r.Get("/signup", controller.StaticHandler(tmpl))
+
 	wd, err := os.Getwd()
 	if err != nil {
 		panic(err)
 	}
+
 	filesDir := http.Dir(filepath.Join(wd, "static"))
 	FileServer(r, "/static", filesDir)
+
 	fmt.Println("Server is running on http://localhost:3000 ")
 	http.ListenAndServe("localhost:3000", r)
 }
-
 
 func FileServer(r chi.Router, path string, root http.FileSystem) {
 	if strings.ContainsAny(path, "{}*") {
@@ -51,3 +60,4 @@ func FileServer(r chi.Router, path string, root http.FileSystem) {
 		fs.ServeHTTP(w, r)
 	})
 }
+

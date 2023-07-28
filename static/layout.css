@@ -1,3 +1,5 @@
+@import "./signUp.css";
+
 :root {
   ---img-high: url("/static/background.jpg");
   ---w-900: 900px;
@@ -77,6 +79,10 @@ navBar {
 }
 
 .right {
+  display: flex;
+}
+
+.left {
   display: flex;
 }
 
