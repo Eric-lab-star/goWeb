@@ -29,8 +29,9 @@ func main() {
 	tmpl = views.Must(views.ParseFS("404.gohtml"))
 	r.NotFound(controller.StaticHandler(tmpl))
 
-	tmpl = views.Must(views.ParseFS("layout.html", "signUp.html"))
-	r.Get("/signup", controller.StaticHandler(tmpl))
+	user := controller.User{}
+	user.Template.New = views.Must(views.ParseFS("layout.html", "signUp.html"))
+	r.Get("/signup", user.Render)
 
 	wd, err := os.Getwd()
 	if err != nil {
@@ -60,4 +61,3 @@ func FileServer(r chi.Router, path string, root http.FileSystem) {
 		fs.ServeHTTP(w, r)
 	})
 }
-

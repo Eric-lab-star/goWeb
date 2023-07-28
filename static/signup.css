@@ -5,12 +5,23 @@ form {
   align-items: center;
 }
 
+form > title {
+  display: block;
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
 form > div {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   width: 300px;
   margin: 10px;
   font-size: 15px;
+}
+form > div > input {
+  padding: 10px;
 }
 
 form > div > button {
