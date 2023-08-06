@@ -17,8 +17,8 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
-	tmpl := views.Must(views.ParseFS("layout.html", "home.gohtml"))
-	r.Get("/", controller.StaticHandler(tmpl))
+	tmpl := views.Must(views.ParseFS("layout.html", "home.gohtml")) // parse template
+	r.Get("/", controller.StaticHandler(tmpl))                      // render template with data
 
 	tmpl = views.Must(views.ParseFS("layout.html", "contact.gohtml"))
 	r.Get("/contact", controller.StaticHandler(tmpl))
@@ -33,6 +33,7 @@ func main() {
 	tmpl = views.Must(views.ParseFS("layout.html", "signUp.html"))
 	user.Template = tmpl
 	r.Get("/signup", user.Render)
+	r.Post("/users", user.Create)
 
 	wd, err := os.Getwd()
 	if err != nil {
