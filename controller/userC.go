@@ -10,7 +10,11 @@ type User struct {
 }
 
 func (user User) Render(w http.ResponseWriter, r *http.Request) {
-	user.Template.ExecuteTempl(w, nil)
+	var data struct {
+		Email string
+	}
+	data.Email = r.FormValue("email")
+	user.Template.ExecuteTempl(w, data)
 }
 
 func (user User) Create(w http.ResponseWriter, r *http.Request) {
