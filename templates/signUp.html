@@ -10,6 +10,10 @@
       placeholder="your@email.com"
       type="email"
       autocomplete="email"
+      value="{{.Email}}"
+      {{if
+      not
+      .Email}}autofocus{{end}}
     />
   </div>
 
@@ -21,6 +25,10 @@
       id="password"
       type="password"
       placeholder="Password"
+      {{if
+      .Email}}
+      autofocus
+      {{end}}
     />
   </div>
 
