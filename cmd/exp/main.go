@@ -14,18 +14,33 @@ func main() {
 		fmt.Fprint(os.Stderr, "Unable to get db url from env")
 		os.Exit(1)
 	}
+
 	conn, err := pgx.Connect(context.Background(), dbUrl)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
 	defer conn.Close(context.Background())
-	var firstName string
-	var age int
-	err = conn.QueryRow(context.Background(), "select first_name, age from users").Scan(&firstName, &age)
+
+	_, err = conn.Exec(context.Background(), `
+		CREATE TABLE IF NOT EXISTS users (
+			id SERIAL PRIMARY KEY,
+			name TEXT,
+			email TEXT UNIQUE NOT NULL
+		);`,
+	)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
-		os.Exit(1)
+		fmt.Fprintf(os.Stderr, "unable to exec query: %s", err)
 	}
-	fmt.Println(firstName, age)
+	_, err = conn.Exec(context.Background(), `
+		CREATE TABLE IF NOT EXISTS orders (
+			id SERIAL PRIMARY KEY,
+			user_id INT NOT NULL,
+			amount INT,
+			description TEXT
+		);`,
+	)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "unbaleto exec query: %s", err)
+	}
 }
