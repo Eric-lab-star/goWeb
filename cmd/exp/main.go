@@ -1,24 +1,31 @@
 package main
 
 import (
-	"html/template"
+	"context"
+	"fmt"
 	"os"
+
+	"github.com/jackc/pgx/v5"
 )
 
-type User struct {
-	Name string
-}
-
 func main() {
-	t, err := template.ParseFiles("hello.gotmpl")
+	dbUrl := os.Getenv("myBlogURL")
+	if dbUrl == "" {
+		fmt.Fprint(os.Stderr, "Unable to get db url from env")
+		os.Exit(1)
+	}
+	conn, err := pgx.Connect(context.Background(), dbUrl)
 	if err != nil {
-		panic(err)
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
 	}
-	user := User{
-		Name: "Kim",
-	}
-	err = t.Execute(os.Stdout, user)
+	defer conn.Close(context.Background())
+	var firstName string
+	var age int
+	err = conn.QueryRow(context.Background(), "select first_name, age from users").Scan(&firstName, &age)
 	if err != nil {
-		panic(err)
+		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
+		os.Exit(1)
 	}
+	fmt.Println(firstName, age)
 }
