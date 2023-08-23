@@ -20,6 +20,10 @@ func Must(t Template, err error) Template {
 	return t
 }
 
+// ParseFS function   .
+//
+// parseFs can take mulitple string filenames and
+// passes to template.ParseFS function
 func ParseFS(patterns ...string) (Template, error) {
 	tmpl, err := template.ParseFS(templates.FS, patterns...)
 	if err != nil {
