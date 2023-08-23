@@ -48,12 +48,14 @@ func main() {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "unbaleto exec query: %s", err)
 	}
+	var name, email string
+	err = db.QueryRow(ctx, `
+	select name, email from users where id=$1;
+	`, 1).Scan(&name, &email)
 
-	var userId int
-	err = db.QueryRow(ctx, `insert into users(name, email) values($1, $2) returning id;`, "joy", "joy@mail.com").Scan(&userId)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(userId)
+	fmt.Println(name, email)
 
 }
