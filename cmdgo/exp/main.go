@@ -21,41 +21,31 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
+	fmt.Println("Connected to database")
 
 	defer db.Close(ctx)
-
-	_, err = db.Exec(ctx, `
-		CREATE TABLE IF NOT EXISTS users (
-			id SERIAL PRIMARY KEY,
-			name TEXT,
-			email TEXT UNIQUE NOT NULL
-		);`,
-	)
-
+	_, err = db.Exec(ctx, "delete from orders; ")
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "unable to exec query: %s", err)
+		fmt.Println(err)
 	}
 
-	_, err = db.Exec(ctx, `
-		CREATE TABLE IF NOT EXISTS orders (
-			id SERIAL PRIMARY KEY,
-			user_id INT NOT NULL,
-			amount INT,
-			description TEXT
-		);`,
-	)
-
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "unbaleto exec query: %s", err)
+	rows, err := db.Query(ctx, "select * from users;")
+	emailList := []string{}
+	for rows.Next() {
+		var id int
+		var name, email string
+		err := rows.Scan(&id, &name, &email)
+		if err != nil {
+			fmt.Println(err)
+		}
+		emailList = append(emailList, email)
 	}
-	var name, email string
-	err = db.QueryRow(ctx, `
-	select name, email from users where id=$1;
-	`, 1).Scan(&name, &email)
+	for id, email := range emailList {
+		_, err = db.Exec(ctx, "insert into orders ( user_id, amount, description) values ($1,$2,$3);", id, 100, email)
+		if err != nil {
+			fmt.Println(err)
+		}
 
-	if err != nil {
-		panic(err)
 	}
-	fmt.Println(name, email)
 
 }
